@@ -1,64 +1,51 @@
+require("dotenv").config();
 const express = require("express");
-const twilio = require("twilio");
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
-// Verificación básica de variables de entorno
-if (
-  !process.env.TWILIO_ACCOUNT_SID ||
-  !process.env.TWILIO_AUTH_TOKEN ||
-  !process.env.DESTINATION_PHONE
-) {
-  console.error("Faltan variables de entorno en Render.");
-}
-
-const client = twilio(
+// 🔐 Twilio
+const client = require("twilio")(
   process.env.TWILIO_ACCOUNT_SID,
   process.env.TWILIO_AUTH_TOKEN
 );
 
-// Endpoint de prueba
-app.get("/", (req, res) => {
-  res.send("Microbit SOS backend activo");
-});
-
-// Endpoint real para enviar SOS
+// 🚨 Endpoint SOS
 app.post("/sendSOS", async (req, res) => {
-  const { latitude, longitude } = req.body;
-
-  if (!latitude || !longitude) {
-    return res.status(400).json({
-      error: "Latitude y Longitude son requeridos"
-    });
-  }
-
-  const message = `🚨 ALERTA SOS
-Ubicación:
-https://maps.google.com/?q=${latitude},${longitude}`;
-
   try {
-    const response = await client.messages.create({
-      body: message,
+    const { latitude, longitude } = req.body;
+
+    console.log("SOS recibido:", latitude, longitude);
+
+    // 📍 Link Google Maps
+    const mapLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
+
+    const message = await client.messages.create({
       from: "whatsapp:+14155238886", // Sandbox Twilio
-      to: `whatsapp:${process.env.DESTINATION_PHONE}`
+      to: "whatsapp:+5219616548050", // ⚠️ CAMBIA a tu número
+      body: `🚨 SOS ACTIVADO\n\nUbicación:\n${mapLink}`
     });
 
-    res.status(200).json({
+    console.log("Mensaje enviado:", message.sid);
+
+    res.json({
       success: true,
-      sid: response.sid
+      sid: message.sid
     });
 
   } catch (error) {
-    console.error("Error enviando mensaje:", error.message);
+    console.error("Error Twilio:", error);
     res.status(500).json({
+      success: false,
       error: error.message
     });
   }
 });
 
+// 🟢 Servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Servidor activo en puerto ${PORT}`);
 });
-Add GET endpoint
