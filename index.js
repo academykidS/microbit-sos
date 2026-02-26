@@ -5,32 +5,33 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔐 Credenciales Twilio
-console.log("TWILIO ACCOUNT SID EN USO:", process.env.TWILIO_ACCOUNT_SID);
-
+// 🔐 Twilio
 const client = require("twilio")(
   process.env.TWILIO_ACCOUNT_SID,
   process.env.TWILIO_AUTH_TOKEN
 );
 
-// 🟢 Endpoint principal
+// 🟢 Ruta prueba
+app.get("/", (req, res) => {
+  res.send("Backend SOS activo");
+});
+
+// 🚨 Endpoint SOS
 app.post("/sendSOS", async (req, res) => {
   try {
     const { latitude, longitude } = req.body;
 
-    console.log("Coordenadas recibidas:", latitude, longitude);
+    console.log("Ubicación:", latitude, longitude);
 
-    // 📍 Link Google Maps
     const mapLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
 
-    // 📲 Envío WhatsApp Sandbox
     const message = await client.messages.create({
-      from: "whatsapp:+14155238886", // Sandbox oficial Twilio
-      to: "whatsapp:+18324195763", // ⚠️ CAMBIA si deseas
+      from: "whatsapp:+14155238886",
+      to: "whatsapp:+1TU_NUMERO_AQUI", // ⚠️ cambia al número +1
       body: `🚨 SOS ACTIVADO\n\nUbicación:\n${mapLink}`
     });
 
-    console.log("SID generado:", message.sid);
+    console.log("SID:", message.sid);
 
     res.json({
       success: true,
@@ -38,8 +39,7 @@ app.post("/sendSOS", async (req, res) => {
     });
 
   } catch (error) {
-    console.error("ERROR COMPLETO TWILIO:", error);
-
+    console.error("Error:", error);
     res.status(500).json({
       success: false,
       error: error.message
@@ -47,12 +47,6 @@ app.post("/sendSOS", async (req, res) => {
   }
 });
 
-// 🟢 Ruta de prueba
-app.get("/", (req, res) => {
-  res.send("Backend SOS activo");
-});
-
-// 🟢 Puerto
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
