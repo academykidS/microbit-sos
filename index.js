@@ -27,7 +27,7 @@ app.post("/sendSOS", async (req, res) => {
     // 📲 Envío WhatsApp Sandbox
     const message = await client.messages.create({
       from: "whatsapp:+14155238886", // Sandbox oficial Twilio
-      to: "whatsapp:+5219616548050", // ⚠️ CAMBIA si deseas
+      to: "whatsapp:+18324195763", // ⚠️ CAMBIA si deseas
       body: `🚨 SOS ACTIVADO\n\nUbicación:\n${mapLink}`
     });
 
