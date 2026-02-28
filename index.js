@@ -27,7 +27,7 @@ app.post("/sendSOS", async (req, res) => {
 
     const message = await client.messages.create({
       from: "whatsapp:+14155238886",
-      to: "whatsapp:+18324195763", // ⚠️ cambia al número +1
+      to: "whatsapp:+13463552351", // ⚠️ cambia al número +1
       body: `🚨 SOS ACTIVADO\n\nUbicación:\n${mapLink}`
     });
 
