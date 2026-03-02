@@ -15,7 +15,7 @@ app.post("/sendSOS", async (req, res) => {
 
     await client.messages.create({
       from: "whatsapp:+14155238886",   // Twilio Sandbox number
-      to: "whatsapp:+529616548050",     // YOUR number
+      to: "whatsapp:+5219616548050",     // YOUR number
       body: "🚨 SOS ALERT! The button was pressed."
     });
 
