@@ -17,20 +17,13 @@ const client = twilio(
 );
 
 // Endpoint para enviar mensaje
-app.post("/enviar", async (req, res) => {
-  try {
-    const fromNumber = "whatsapp:+14155238886"; // Sandbox oficial
-    const toNumber = "whatsapp:+5219616548050"; // TU NÚMERO EXACTO (como aparece en Sandbox)
+app.post("/sos", async (req, res) => {
 
-    console.log("Intentando enviar mensaje...");
-    console.log("FROM:", fromNumber);
-    console.log("TO:", toNumber);
+   console.log("Recibí solicitud SOS");
 
-    const message = await client.messages.create({
-      from: fromNumber,
-      to: toNumber,
-      body: "Mensaje de prueba desde microbit 🚀"
-    });
+   res.json({ status: "ok" });
+
+});
 
     console.log("Mensaje enviado. SID:", message.sid);
 
