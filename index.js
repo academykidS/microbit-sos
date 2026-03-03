@@ -37,7 +37,7 @@ app.post("/sos", async (req, res) => {
     console.log("=====================================");
 
     const fromNumber = "whatsapp:+14155238886"; // Sandbox Twilio
-    const toNumber = "whatsapp:+5219616548050"; // TU NUMERO EXACTO
+    const toNumber = "whatsapp:+18324195763"; // TU NUMERO EXACTO
 
     console.log("Intentando enviar WhatsApp...");
     console.log("FROM:", fromNumber);
