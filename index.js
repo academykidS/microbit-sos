@@ -1,51 +1,28 @@
 const express = require("express");
-const twilio = require("twilio");
-
 const app = express();
+
 app.use(express.json());
 
-// 🔎 LOGS DE VERIFICACIÓN AL INICIAR
-console.log("=====================================");
-console.log("TWILIO ACCOUNT SID:", process.env.TWILIO_ACCOUNT_SID);
-console.log("TWILIO AUTH TOKEN:", process.env.TWILIO_AUTH_TOKEN ? "CARGADO" : "NO CARGADO");
-console.log("=====================================");
+const PORT = process.env.PORT || 10000;
 
-// Cliente Twilio
-const client = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
-
-// Endpoint para enviar mensaje
-app.post("/sos", async (req, res) => {
-
-   console.log("Recibí solicitud SOS");
-
-   res.json({ status: "ok" });
-
+// Ruta principal (solo para probar en navegador)
+app.get("/", (req, res) => {
+  res.send("Servidor activo 🚀");
 });
 
-    console.log("Mensaje enviado. SID:", message.sid);
+// Ruta para recibir SOS desde tu app MIT
+app.post("/sos", (req, res) => {
+  console.log("=================================");
+  console.log("Recibí solicitud SOS");
+  console.log("Body recibido:", req.body);
+  console.log("=================================");
 
-    res.status(200).json({
-      success: true,
-      sid: message.sid
-    });
-
-  } catch (error) {
-    console.error("ERROR COMPLETO:");
-    console.error(error);
-
-    res.status(500).json({
-      success: false,
-      error: error.message,
-      code: error.code
-    });
-  }
+  // Respuesta de prueba SIN Twilio
+  res.json({ status: "ok" });
 });
 
-// Puerto
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
+  console.log("=================================");
   console.log("Servidor corriendo en puerto", PORT);
+  console.log("=================================");
 });
