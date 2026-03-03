@@ -22,7 +22,7 @@ const client = twilio(
 // RUTA PRINCIPAL (PRUEBA EN NAVEGADOR)
 // ===============================
 app.get("/", (req, res) => {
-  res.send("Servidor activo 🚀");
+  res.send("Active server 🚀");
 });
 
 // ===============================
