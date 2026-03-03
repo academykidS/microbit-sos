@@ -46,7 +46,7 @@ app.post("/sos", async (req, res) => {
     const message = await client.messages.create({
       from: fromNumber,
       to: toNumber,
-      body: "🚨 SOS ALERTA 🚨\nEl botón del micro:bit fue presionado."
+      body: "🚨 SOS ALERT 🚨\nThe micro:bit button was pressed."
     });
 
     console.log("✅ Mensaje enviado correctamente");
